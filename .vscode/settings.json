@@ -59,5 +59,6 @@
   "files.associations": {
     "stdio.h": "c",
     "defines.h": "c"
-  }
+  },
+  "C_Cpp.dimInactiveRegions": false
 }

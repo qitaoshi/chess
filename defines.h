@@ -1,10 +1,15 @@
 #ifndef DEFS_H
 #define DEFS_H
 
+#include <stdlib.h>
+#include <assert.h>
+
+
 typedef unsigned long long U64;
 
 #define NAME "Quokachi 1.0"
 #define BRD_SQ_NUM 120
+#define sq120 120
 
 #define MAXGAMEMOVES 2048
 enum{ EMPTY, wPawn, wKnight, wBishop, wRook, wQueen, wKing,
@@ -63,15 +68,27 @@ typedef struct {
 
     S_Undo history[MAXGAMEMOVES];
 
+
+    // piece lists
+    int pList[13][10]; // 13 piece types, max 10 of each type
+
+
 }S_Board;
 
 /* MACROS   */
 #define FR2SQ(f,r) ((21 + (f)) + ((r) * 10)) // file rank to square
+#define SQ64(sq120) Sq120ToSq64[sq120]
 
 /*  GLOBALS */
 extern int Sq120ToSq64[BRD_SQ_NUM];
 extern int Sq64ToSq120[64];
 
 /* FUNCTIONS */
+// init.c
 extern void AllInt();
+
+// bitboards.c
+extern void PrintBitBoard(U64 bb);
+
+
 #endif
