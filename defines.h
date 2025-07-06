@@ -6,10 +6,13 @@ typedef unsigned long long U64;
 #define NAME "Quokachi 1.0"
 #define BRD_SQ_NUM 120
 
+#define MAXGAMEMOVES 2048
 enum{ EMPTY, wPawn, wKnight, wBishop, wRook, wQueen, wKing,
        bPawn, bKnight, bBishop, bRook, bQueen, bKing };
-enum{ fileA, fileB, fileC, fileD, fileE, fileF, fileG, fileH, fileNone};
-enum { rank1, rank2, rank3, rank4, rank5, rank6, rank7, rank8, rankNone};
+
+enum { FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE };
+enum { RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NONE };
+
 enum { WHITE, BLACK, BOTH };
 
 enum{
@@ -21,8 +24,20 @@ enum{
     A6 = 71, B6, C6, D6, E6, F6, G6, H6,
     A7 = 81, B7, C7, D7, E7, F7, G7, H7,
     A8 = 91, B8, C8, D8, E8, F8, G8, H8, NoSQ,
-};
+}; // squares on the board
 enum {FALSE, TRUE};
+
+enum {WRCA =1, WQCA = 2, BRCA = 4, BQCA = 8}; // castle format  = (colour, side) 0 0 0 0
+
+
+typedef struct defines
+{
+    int move;
+    int castlePerm;
+    int enPas;
+    int FiftyMove;
+    U64 poskey;
+} S_Undo;
 
 typedef struct {
     int pieces[BRD_SQ_NUM];
@@ -37,11 +52,26 @@ typedef struct {
     int ply;    // seacrch depth
     int hisPly;
     
+    int castlePerm;
+
     U64 posKey;
+
     int pceNum[13];
     int bigPce[3];
-    int majPce[3];
+    int majPce[3]; // rooks and queens
+    int minPce[3]; // bishops and knights
+
+    S_Undo history[MAXGAMEMOVES];
 
 }S_Board;
 
+/* MACROS   */
+#define FR2SQ(f,r) ((21 + (f)) + ((r) * 10)) // file rank to square
+
+/*  GLOBALS */
+extern int Sq120ToSq64[BRD_SQ_NUM];
+extern int Sq64ToSq120[64];
+
+/* FUNCTIONS */
+extern void AllInt();
 #endif
