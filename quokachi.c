@@ -8,17 +8,6 @@ int main() {
   
 
     U64 playBitBoard = 0Ull;
-    printf("start:\n");
-
-    PrintBitBoard(playBitBoard);
-
-    playBitBoard |= (1ULL << SQ64(D2));
-    printf("D2 add \n");
-    PrintBitBoard(playBitBoard);
-
-    playBitBoard |= (1ULL << SQ64(G2));
-    printf("G2 add \n");
-    PrintBitBoard(playBitBoard);
 
 
     // int index = 0;
