@@ -1,10 +1,36 @@
 // init.c
 #include "defines.h"
 
+// random 64 bit number
+#define RAND_64 ( (U64)rand() + \
+                ((U64)rand() << 15) + \
+                ((U64)rand() << 30) + \
+                ((U64)rand() << 45) + \
+                ((U64)rand() & 0xf) << 60)
+
 int Sq120ToSq64[BRD_SQ_NUM];
 int Sq64ToSq120[64];
+
 U64 SetMask[64];
 U64 ClearMask[64];
+
+U64 PieceKeys[13][120]; // 13 piece types, 120 squares
+U64 SideKey; // key for side to move    
+U64 CastleKeys[16]; // 16 castle permissions
+
+void initHashKeys() {
+    int index = 0;
+    for(index = 0; index < 13; ++index) {
+        for(int sq = 0; sq < 120; ++sq) {
+            PieceKeys[index][sq] = RAND_64;
+        }
+    }
+    SideKey = RAND_64;
+    
+    for(index = 0; index < 16; ++index) {
+        CastleKeys[index] = RAND_64;
+    }
+}   
 
 void initBitMasks() {
     int index = 0;
