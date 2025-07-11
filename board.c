@@ -2,6 +2,35 @@
 #include "defines.h"
 #include <stdio.h>
 
+void Parse_Fen(char *fen, S_Board *pos){
+    assert(fen != NULL);
+    assert(pos != NULL);
+
+    int rank = RANK_8;
+    int file = FILE_A;
+
+    int pieces = 0;
+    int count = 0;
+    int i = 0;
+    int sq64 = 0;
+    int sq120 = 0;
+
+    ResetBoard(pos);
+
+    while((rank >= RANK_1) && *fen){
+        count = 1;
+        switch (*fen)
+        {
+        case constant expression:
+            /* code */
+            break;
+        
+        default:
+            break;
+        }
+    }
+}
+
 void ResetBoard(S_Board * pos){
 
     int index = 0;
