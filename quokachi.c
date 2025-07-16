@@ -1,31 +1,30 @@
 #include <stdio.h>
 #include "defines.h"
 
+#define FEN1 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq e3 0 1"
+#define FEN2 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq c6 0 2"
+#define FEN3 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 2"
+
 int main() {
     // Check
     AllInt();
 
-  
+    S_Board board[1];
 
-    U64 playBitBoard = 0Ull;
+    ParseFen(START_FEN, board); 
+    PrintBoard(board);
+    
+    ParseFen(FEN1, board);
+    PrintBoard(board);
+
+    ParseFen(FEN2, board);
+    PrintBoard(board);
+
+    ParseFen(FEN3, board);
+    PrintBoard(board);
 
 
-    // int index = 0;
 
-    // for(index = 0; index < BRD_SQ_NUM; ++index) {
-    //     if(index%10 ==0) {
-    //         printf("\n");
-    //     }
-    //     printf("%5d ", Sq120ToSq64[index]);
-    // }
-    // printf("\n");
-    // printf("\n");
 
-    // for(index = 0; index < 64; ++index) {
-    //     if ( index % 8 == 0) {
-    //         printf("\n");
-    //     } 
-    //     printf("%5d ", Sq64ToSq120[index]);
-    // }
     return 0;
 }

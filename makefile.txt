@@ -1,6 +1,6 @@
 all:
     gcc quokachi.c -o quokachi
 
-    gcc quokachi.c init.c  bitboard.c hashkeys.c  board.c -o quokachi
+    gcc quokachi.c init.c  bitboard.c hashkeys.c  board.c data.c -o quokachi
 
     

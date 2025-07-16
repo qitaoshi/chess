@@ -98,6 +98,10 @@ extern U64 PieceKeys[13][120]; // 13 piece types, 120 squares
 extern U64 SideKey; // key for side to move    
 extern U64 CastleKeys[16]; // 16 castle permissions
 
+extern char PceChar[]; // piece characters
+extern char SideChar[]; // side characters
+extern char RankChar[]; // rank characters
+
 
 /* FUNCTIONS */
 // init.c
@@ -114,6 +118,8 @@ extern U64 GeneratePosKey(const S_Board *pos);
 
 //board.c
 extern void ResetBoard(S_Board *pos);
+extern int ParseFen( char *fen, S_Board *pos);
+extern void PrintBoard(const S_Board *pos);
 
 
 #endif
