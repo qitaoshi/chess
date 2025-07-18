@@ -66,9 +66,10 @@ typedef struct {
     U64 posKey;
 
     int pceNum[13];
-    int bigPce[3];
-    int majPce[3]; // rooks and queens
-    int minPce[3]; // bishops and knights
+    int bigPce[2];
+    int majPce[2]; // rooks and queens
+    int minPce[2]; // bishops and knights
+    int material[2]; // material for each side
 
     S_Undo history[MAXGAMEMOVES];
 
@@ -102,6 +103,13 @@ extern char PceChar[]; // piece characters
 extern char SideChar[]; // side characters
 extern char RankChar[]; // rank characters
 
+extern int PieceBig[13]; // big pieces
+extern int PieceMaj[13] ;// major pieces
+extern int PieceMin[13] ;// minor pieces
+extern int PieceVal[13] ;// piece values
+extern int PieceCol[13] ;// piece colors
+
+
 
 /* FUNCTIONS */
 // init.c
@@ -120,6 +128,7 @@ extern U64 GeneratePosKey(const S_Board *pos);
 extern void ResetBoard(S_Board *pos);
 extern int ParseFen( char *fen, S_Board *pos);
 extern void PrintBoard(const S_Board *pos);
+extern void UpdateListsMaterials(S_Board *pos)
 
 
 #endif

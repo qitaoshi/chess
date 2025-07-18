@@ -2,6 +2,31 @@
 #include "defines.h"
 #include <stdio.h>
 
+void UpdateListsMaterials(S_Board *pos) {
+    int piece, sq, index,colour;
+    for (index = 0; index < BRD_SQ_NUM; ++index) {
+        sq = index;
+        piece = pos->pieces[sq];
+        if (piece == EMPTY || piece == OFFBOARD) {
+            colour = PieceCol[piece];
+
+            if(PieceBig[piece] == TRUE) pos->bigPce[colour]++;
+            if(PieceMaj[piece] == TRUE) pos->majPce[colour]++;
+            if(PieceMin[piece] == TRUE) pos->minPce[colour]++;  
+
+            pos->material[colour] += PieceVal[piece];
+
+            // piece list
+            pos->pList[piece][pos->pceNum[piece]] = sq;
+            pos->pceNum[piece];
+            
+            if(piece == wK) pos->KingSq[colour] = sq;
+            if(piece == bK) pos->KingSq[colour]= sq;// add piece to the list
+        } // skip empty and offboard squares
+
+    }
+}
+
 int ParseFen(char *fen, S_Board *pos){
     assert(fen != NULL);
     assert(pos != NULL);
