@@ -18,6 +18,34 @@ U64 PieceKeys[13][120]; // 13 piece types, 120 squares
 U64 SideKey; // key for side to move    
 U64 CastleKeys[16]; // 16 castle permissions
 
+int FileBrd[BRD_SQ_NUM];
+int RankBrd[BRD_SQ_NUM];
+
+
+void InitFileRankBrd() {
+
+    int index = 0;
+    int file = FILE_A;
+    int rank = RANK_1;
+    int sq = A1;
+    int sq64 = 0;
+
+
+    for (index = 0; index < BRD_SQ_NUM; ++index) {
+        FileBrd[index] = OFFBOARD; // initialize to none
+        RankBrd[index] = OFFBOARD; // initialize to none
+    }
+    
+    for (int rank = RANK_1; rank <= RANK_8; ++rank) {
+        for (int file = FILE_A; file <= FILE_H; ++file) {
+            int sq = FR2SQ(file, rank);
+            FileBrd[sq] = file;
+            RankBrd[sq] = rank;
+        }
+    }
+
+}
+
 void initHashKeys() {
     int index = 0;
     for(index = 0; index < 13; ++index) {
