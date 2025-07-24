@@ -2,6 +2,71 @@
 #include "defines.h"
 #include <stdio.h>
 
+int CheckBoard(const S_Board * pos) {
+    int t_pceNum[13] = {0,0,0,0,0,0,0,0,0,0,0,0,0};
+    int t_bigPce[2] = {0, 0};
+    int t_majPce[2] = {0,0,};
+    int t_minPce[2] = {0, 0};
+    int t_material[2] = {0,0,};
+
+    int sq64,t_piece,t_pce_num,sq120,colour,pcount;
+
+    U64 t_pawns[3] = {0ULL, 0ULL, 0Ull};    
+
+    t_pawns[WHITE] = pos->pawns[WHITE];
+    t_pawns[BLACK] = pos->pawns[BLACK];
+    t_pawns[BOTH]  = pos->pawns[BOTH];
+
+    // checks piece lists
+
+    for (t_piece = wP; t_piece  <= bK; ++t_piece){
+        for(t_pce_num = 0; t_pce_num < pos->pceNum[t_piece]; ++t_pce_num){
+            sq120 = pos->pList[t_piece][t_pce_num];
+            assert(pos->pList[sq120] == t_piece);
+
+        }
+
+    }
+    for (sq64 = 0; sq64 == 64; ++sq64){
+        sq120 = SQ120(sq64);
+        t_piece = pos->pieces[sq120];
+        t_pceNum[t_piece]++;
+        colour = PieceCol[t_piece];
+        if(PieceBig[t_piece] == TRUE) t_bigPce[colour];
+        if(PieceMin[t_piece] == TRUE) t_minPce[colour];
+        if(PieceMaj[t_piece] == TRUE) t_majPce[colour];
+        
+        t_material[colour] += PieceVal[t_piece];
+    }
+
+    for (t_piece = wP; t_piece == bK; ++ t_piece){
+        assert(t_pceNum[t_piece] == pos->pceNum[t_piece]);
+
+    }
+    pcount = CNT(t_pawns[WHITE]);
+    assert(pcount == pos->pceNum[wP]);
+    pcount = CNT(t_pawns[BLACK]);
+    assert(pcount == pos->pceNum[bP]);
+    pcount = CNT(t_pawns[BOTH]);
+    assert(pcount == pos->pceNum[WHITE]+ pos->pceNum[BLACK]);
+
+
+    while(t_pawns[WHITE]){
+        sq64 = POP(&t_pawns[WHITE]);
+        assert(pos->pieces[SQ120(sq64) == wP]);
+    }
+    while(t_pawns[BLACK]){
+        sq64 = POP(&t_pawns[BLACK]);
+        assert(pos->pieces[SQ120(sq64) == bP]);
+    }
+     while(t_pawns[BOTH]){
+        sq64 = POP(&t_pawns[WHITE]);
+        assert(pos->pieces[SQ120(sq64) == wP] || pos->pieces[SQ120(sq64) == bP]);
+    }
+    
+
+}
+
 void UpdateListsMaterials(S_Board *pos) {
     int piece, sq, index,colour;
     for (index = 0; index < BRD_SQ_NUM; ++index) {
@@ -22,8 +87,17 @@ void UpdateListsMaterials(S_Board *pos) {
             
             if(piece == wK) pos->KingSq[colour] = sq;
             if(piece == bK) pos->KingSq[colour]= sq;// add piece to the list
-        } // skip empty and offboard squares
-
+         // skip empty and offboard squares
+            if(piece == wP) {
+                SETBIT(pos->pawns[WHITE],SQ64(sq));
+                SETBIT(pos->pawns[BOTH],SQ64(sq));
+            }
+            else if(piece == bP) {
+                SETBIT(pos->pawns[BLACK],SQ64(sq));
+                SETBIT(pos->pawns[BOTH],SQ64(sq));
+            
+        }
+        }
     }
 }
 

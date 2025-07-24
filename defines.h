@@ -109,11 +109,14 @@ extern int PieceMin[13] ;// minor pieces
 extern int PieceVal[13] ;// piece values
 extern int PieceCol[13] ;// piece colors
 
+extern int FileBrd[BRD_SQ_NUM];
+extern int RankBrd[BRD_SQ_NUM];
 
 
 /* FUNCTIONS */
 // init.c
 extern void AllInt();
+extern void InitFileRankBrd();
 
 
 // bitboards.c
