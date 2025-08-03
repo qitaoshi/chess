@@ -13,6 +13,7 @@ typedef unsigned long long U64;
 #define START_FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 #define MAXGAMEMOVES 2048
+#define MAXPOSITIONMOVES 256
 enum {EMPTY, wP, wN, wB, wR, wQ, wK,
        bP, bN, bB, bR, bQ, bK}; // piece types
 
@@ -37,6 +38,17 @@ enum{
 enum {FALSE, TRUE};
 
 enum {WRCA =1, WQCA = 2, BRCA = 4, BQCA = 8}; // castle format  = (colour, side) 0 0 0 0
+
+typedef struct{
+    int move;
+    int score;
+} S_Move;
+typedef struct 
+{
+    S_Move moves[MAXPOSITIONMOVES];
+    int count;
+}S_MOVELIST;
+
 
 
 typedef struct defines
@@ -80,6 +92,39 @@ typedef struct {
 
 }S_Board;
 
+
+
+
+
+/* Game Moves*/
+/*
+
+
+0000 0000 0000 0000 0000 0111 1111 -> FROM SQUARE 0x7f
+0000 0000 0000 0011 1111 1000 0000 -> TO SQUARE >> 7, 0x7F
+0000 0000 0011 1100 0000 0000 0000 -> capture >> 14 0xF
+0000 0000 0100 0000 0000 0000 0000 -> EP 0x40000
+0000 0000 1000 0000 0000 0000 0000 -> Pawnstart 0x80000
+0000 1111 0000 0000 0000 0000 0000 -> Promotion > 20 0xF
+0001 0000 0000 0000 0000 0000 0000 -> castle 0x100000
+
+*/
+#define FROMSQ(m) ((m) & 0x7F)
+#define TOSQ(m) (((m)>>7) & 0x7F)
+
+#define CAPTURED(m) (((m)>>14) & 0xF)
+#define PROMOTED(m) (((m)>>20) & 0xF)
+
+#define MFLAGEP 0x40000
+#define MFLAGPS 0x80000
+#define MFLAGCA 0x1000000
+
+#define MFLAGCAP 0x7C000
+#define MFLAGFROM 0xF00000
+
+
+
+
 /* MACROS   */
 #define FR2SQ(f,r) ((21 + (f)) + ((r) * 10)) // file rank to square
 #define SQ64(sq120) (Sq120ToSq64[(sq120)])
@@ -88,6 +133,11 @@ typedef struct {
 #define CNT(b) CountBits(b)
 #define CLEARBIT(bb,sq) ((bb) &= ClearMask[sq])
 #define SETBIT(bb,sq) ((bb) |= SetMask[sq]) 
+
+#define IsBQ(p) (PieceBishopQueen[(p)])
+#define IsRQ(p) (PieceRookQueen[(p)])
+#define IsKn(p) (PieceKnight[(p)])
+#define IsKi(p) (PieceKing[(p)])
 
 /*  GLOBALS */
 extern int Sq120ToSq64[BRD_SQ_NUM];
@@ -112,6 +162,11 @@ extern int PieceCol[13] ;// piece colors
 extern int FileBrd[BRD_SQ_NUM];
 extern int RankBrd[BRD_SQ_NUM];
 
+extern int PieceKnight[13];
+extern int PieceKing[13];
+extern int PieceRookQueen[13];
+extern int PieceBishopQueen[13]; 
+
 
 /* FUNCTIONS */
 // init.c
@@ -132,6 +187,10 @@ extern void ResetBoard(S_Board *pos);
 extern int ParseFen( char *fen, S_Board *pos);
 extern void PrintBoard(const S_Board *pos);
 extern void UpdateListsMaterials(S_Board *pos);
+//attack.c
+extern int SqAttack(const int sq, const int side, const S_Board *pos);
 
-
+//io.c 
+extern char *PrMove(const int  move);
+extern char *PrSq(const int move);
 #endif
